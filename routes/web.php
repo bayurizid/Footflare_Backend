@@ -22,10 +22,18 @@ Route::get('/admin', function () {
     $totalUser = User::count();
     $totalPesanan = Order::count();
 
+    $totalProcessing = Order::where('status', 'Processing')->count();
+    $totalCompleted = Order::where('status', 'Completed')->count();
+
+    $recentOrders = Order::latest()->take(5)->get();
+
     return view('admin.dashboard', compact(
         'totalProduk',
         'totalUser',
-        'totalPesanan'
+        'totalPesanan',
+        'totalProcessing',
+        'totalCompleted',
+        'recentOrders'
     ));
 });
 
@@ -121,8 +129,8 @@ Route::put('/admin/orders/{id}', function (Request $request, $id) {
     $currentStatus = $order->status;
     $newStatus = $request->status;
 
-    $allowedTransitions = [
-        'Pending' => ['Processing', 'Cancelled'],
+        $allowedTransitions = [
+        'Placed' => ['Processing', 'Cancelled'],
         'Processing' => ['Completed', 'Cancelled'],
         'Completed' => [],
         'Cancelled' => [],
