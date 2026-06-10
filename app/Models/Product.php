@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Wishlist;
 
 class Product extends Model
 {
@@ -19,4 +20,12 @@ class Product extends Model
         'discount_percentage',
         'thumbnail_url'
     ];
+
+    /**
+     * Relasi ke wishlist
+     */
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }
